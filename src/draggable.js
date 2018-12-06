@@ -42,7 +42,7 @@ export function draggable(sprite) {
       }
 
       sprite.attr({ x: tarX, y: tarY });
-      $drag && $drag.dispatchEvent('dragging', evt, true, true)
+      $drag.dispatchEvent('dragging', evt, true, true)
     }
   };
 
@@ -52,8 +52,8 @@ export function draggable(sprite) {
       $drag.releaseMouseCapture();
       delete $drag.x0_;
       delete $drag.y0_;
+      $drag.dispatchEvent('dragend', evt, true, true)
     }
-    $drag && $drag.dispatchEvent('dragend', evt, true, true)
     $drag = null;
   };
   return sprite.on('mousedown', mouseDown).on('mousemove', mouseMove).on('mouseup', mouseUp);
