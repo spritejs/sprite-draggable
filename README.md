@@ -3,7 +3,7 @@ let sprite can draggable，让sprite对象拥有draggable的能力
 
 ### 安装
 
-```
+```javascript
 npm install 
 
 npm start
@@ -13,7 +13,7 @@ npm start
 
 
 ### 使用
-```
+```javascript
   import { draggable } from 'sprite-draggable'
 
   …
