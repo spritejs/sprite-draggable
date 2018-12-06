@@ -63,16 +63,11 @@ function getDragTarget(dom) {
   if (dom.isDraggable) {
     return dom;
   }
-  return getParentDrag(dom);
-  function getParentDrag(dom) {
-    let $parentDom = dom.parentNode;
-    if ($parentDom.tagName === 'layer') {
-      return null;
-    }
-    if ($parentDom.isDraggable) {
-      return $parentDom;
-    } else {
-      return getParentDrag($parentDom);
-    }
+  if (dom.tarName === 'layer') {
+    return null;
   }
+  if (dom.parentNode) {
+    return getDragTarget(dom.parentNode);
+  }
+  return null;
 }

@@ -13,7 +13,7 @@
     "build": "webpack --config ./webpack.config.prod.js",
     "standalone": "babel src -d lib && webpack --env.standalone",
     "start": "webpack-dev-server --config ./webpack.config.js",
-    "prepublishOnly": "npm run build && node ./script/qcdn",
+    "prepublishOnly": "npm run build",
     "lint": "eslint ./ --fix"
   },
   "author": "yaotaiyang",
