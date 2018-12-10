@@ -24,7 +24,7 @@ group.append(child1);
 group.append(child);
 layer.append(group);
 layer.on('dblclick', function () {
-  draggable(child, { distory: true })
+  draggable(child, { destroy: true })
 });
 group.on('mousewheel', (e) => {
   e.preventDefault();

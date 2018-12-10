@@ -1,7 +1,7 @@
 import { Matrix } from 'sprite-math';
 let $drag = null;
 export function draggable(sprite, option) {
-  if (option && option.distory) { //销毁拖动
+  if (option && option.destroy) { //销毁拖动
     if (!sprite.isDraggable) return sprite;
     delete sprite.isDraggable;
     return sprite.off('mousedown', sprite.dragMousedown).off('mousemove', sprite.dragMousemove).off('mouseup', sprite.dragMouseup);
@@ -11,6 +11,9 @@ export function draggable(sprite, option) {
     sprite.dragMousedown = mouseDown;
     sprite.dragMousemove = mouseMove;
     sprite.dragMouseup = mouseUp;
+    if (option.dragRect) {
+      sprite.dragRect = option.dragRect;
+    }
     return sprite.on('mousedown', sprite.dragMousedown).on('mousemove', sprite.dragMousemove).on('mouseup', sprite.dragMouseup);
   }
 
