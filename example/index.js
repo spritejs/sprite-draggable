@@ -1,5 +1,5 @@
 
-import { draggable } from '../lib/index'
+import { draggable, undraggable } from '../lib/index'
 import { ResizeBlock } from './ResizeBlock'
 let i = 0;
 const { Scene, Sprite, Group } = spritejs, w = window.innerWidth, h = window.innerHeight;
@@ -23,7 +23,9 @@ group.append(child2);
 group.append(child1);
 group.append(child);
 layer.append(group);
-
+layer.on('dblclick', function () {
+  draggable(child, { distory: true })
+});
 group.on('mousewheel', (e) => {
   e.preventDefault();
   const [ scaleX, scaleY ] = group.attr('scale');

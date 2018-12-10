@@ -41,6 +41,10 @@ npm start
     console.log('dragend');
   });
 
+
+  //取消元素拖动
+  sprite.draggable(sprite,{distory:true});
+
 ```
 
 
