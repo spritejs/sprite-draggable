@@ -11,7 +11,7 @@ export function draggable(sprite, option) {
     sprite.dragMousedown = mouseDown;
     sprite.dragMousemove = mouseMove;
     sprite.dragMouseup = mouseUp;
-    if (option.dragRect) {
+    if (option && option.dragRect) {
       sprite.dragRect = option.dragRect;
     }
     return sprite.on('mousedown', sprite.dragMousedown).on('mousemove', sprite.dragMousemove).on('mouseup', sprite.dragMouseup);
