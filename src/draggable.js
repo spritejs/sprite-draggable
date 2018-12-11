@@ -58,7 +58,7 @@ export function draggable(sprite, option) {
       }
 
       sprite.attr({ x: tarX, y: tarY });
-      $drag.dispatchEvent('dragging', evt, true, true)
+      $drag.dispatchEvent('drag', evt, true, true)
     }
   };
 
