@@ -28,7 +28,7 @@ npm start
   //表示拖动的范围大于坐标[0,0]
   //sprite.dragRect = [0,0];
 
-  /**拖动过程中，有三个事件 dragstart、dragging、dragend**/
+  /**拖动过程中，有三个事件 dragstart、drag、dragend**/
   sprite.on('dragstart',function(event){
     console.log('dragstart');
   });
