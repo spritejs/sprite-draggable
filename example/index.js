@@ -1,5 +1,5 @@
 
-import { draggable, undraggable } from '../lib/index'
+import { draggable } from '../lib/index'
 import { ResizeBlock } from './ResizeBlock'
 let i = 0;
 const { Scene, Sprite, Group } = spritejs, w = window.innerWidth, h = window.innerHeight;
