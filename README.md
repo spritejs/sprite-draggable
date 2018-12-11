@@ -4,7 +4,7 @@ let sprite can draggable，让sprite对象拥有draggable的能力
 ### 安装
 
 ```javascript
-npm install 
+npm install
 
 npm start
 ```
@@ -30,11 +30,11 @@ npm start
 
   /**拖动过程中，有三个事件 dragstart、dragging、dragend**/
   sprite.on('dragstart',function(event){
-    console.log('dragging');
+    console.log('dragstart');
   });
 
-  sprite.on('dragging',function(event){
-    console.log('dragging');
+  sprite.on('drag',function(event){
+    console.log('drag');
   });
 
   sprite.on('dragend',function(event){

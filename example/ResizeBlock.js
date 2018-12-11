@@ -23,14 +23,14 @@ export class ResizeBlock extends Group {
     $drag.dragRect = [ ox + dragPx * 2, oy + dragPx * 2 ];//父级容器至少为拖动块的两倍大小
     draggable($sprite);
     draggable($drag);
-    $sprite.on("dragging", function () {
+    $sprite.on("drag", function () {
       let [ x, y ] = this.attr("pos");
       let [ w, h ] = this.attr("size");
       $drag.attr({ pos: [ x + w - dragDx, y + h - dragDx ] });
       label.attr({ pos: [ x, y ] })
       $drag.dragRect = [ x + dragPx * 2, y + dragPx * 2 ]
     });
-    $drag.on("dragging", function (evt) {
+    $drag.on("drag", function (evt) {
       let [ x, y ] = this.attr('pos');
       let [ ox, oy ] = $sprite.attr('pos');
       let width = x - ox + dragDx;
