@@ -1,16 +1,20 @@
 import { Matrix } from 'sprite-math';
 let $drag = null;
+const dragMousedown = Symbol('dragMousedown');
+const dragMousemove = Symbol('dragMousemove');
+const dragMouseup = Symbol('dragMouseup');
+const isDraggable = Symbol('isDraggable');
 export function draggable(sprite, option) {
   if (option && option.destroy) { //销毁拖动
-    if (!sprite.isDraggable) return sprite;
-    delete sprite.isDraggable;
-    return sprite.off('mousedown', sprite.dragMousedown).off('mousemove', sprite.dragMousemove).off('mouseup', sprite.dragMouseup);
+    if (!sprite[ isDraggable ]) return sprite;
+    delete sprite[ isDraggable ];
+    return sprite.off('mousedown', sprite[ dragMousedown ]).off('mousemove', sprite[ dragMousemove ]).off('mouseup', sprite[ dragMouseup ]);
   } else {
-    if (sprite.isDraggable) return sprite;
-    sprite.isDraggable = true;
-    sprite.dragMousedown = mouseDown;
-    sprite.dragMousemove = mouseMove;
-    sprite.dragMouseup = mouseUp;
+    if (sprite[ isDraggable ]) return sprite;
+    sprite[ isDraggable ] = true;
+    sprite[ dragMousedown ] = mouseDown;
+    sprite[ dragMousemove ] = mouseMove;
+    sprite[ dragMouseup ] = mouseUp;
     if (option && option.dragRect) {
       sprite.dragRect = option.dragRect;
     }
@@ -70,7 +74,7 @@ export function draggable(sprite, option) {
   };
 }
 function getDragTarget(dom) {
-  if (dom.isDraggable) {
+  if (dom[ isDraggable ]) {
     return dom;
   }
   if (dom.tarName === 'layer') {
