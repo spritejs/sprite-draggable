@@ -43,7 +43,7 @@ npm start
 
 
   //取消元素拖动
-  sprite.draggable(sprite,{distory:true});
+  sprite.draggable(sprite,{destroy:true});
 
 ```
 
