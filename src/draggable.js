@@ -1,5 +1,6 @@
 import { Matrix } from 'sprite-math';
 let $drag = null;
+let dropList = [];
 const _mouseDown = Symbol('mouseDown');
 const _mouseMove = Symbol('mouseMove');
 const _mouseUp = Symbol('mouseUp');
@@ -58,7 +59,8 @@ export function draggable(sprite, option) {
       }
 
       sprite.attr({ x: tarX, y: tarY });
-      $drag.dispatchEvent('drag', evt, true, true)
+      $drag.dispatchEvent('drag', evt, true, true);
+      checkDroppable(evt, sprite);
     }
   };
 
@@ -73,6 +75,22 @@ export function draggable(sprite, option) {
     $drag = null;
   };
 }
+
+export function droppable(sprite, option) {
+  dropList.push(sprite);
+}
+
+function checkDroppable(evt, sprite) {
+  dropList.forEach(dropSprite => {
+    const dragRect = sprite.renderBox;
+    const dropRect = dropSprite.renderBox;
+    const centerPoint = [ (dragRect[ 0 ] + dragRect[ 2 ]) / 2, (dragRect[ 1 ] + dragRect[ 3 ]) / 2 ];
+    if (centerPoint[ 0 ] > dropRect[ 0 ] && centerPoint[ 0 ] < dropRect[ 3 ] && centerPoint[ 1 ] > dropRect[ 1 ] && centerPoint[ 1 ] < dropRect[ 3 ]) {
+      dropSprite.dispatchEvent('dragend', evt, true, true)
+    }
+  });
+}
+
 function getDragTarget(dom) {
   if (dom[ _isDraggable ]) {
     return dom;

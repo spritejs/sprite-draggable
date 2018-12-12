@@ -1,4 +1,5 @@
-import { draggable } from './draggable';
+import { draggable, droppable } from './draggable';
 export {
-  draggable
+  draggable,
+  droppable
 };
