@@ -21,7 +21,7 @@ npm start
 
   let group = draggable(new Group());
 
-  group.dropabble(group) //注册drop事件
+  dropabble(group) //注册drop事件
 
   group.on('drag', (evt) => {
     console.log('drag')
