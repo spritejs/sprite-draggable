@@ -6,7 +6,7 @@ const _mouseMove = Symbol('mouseMove');
 const _mouseUp = Symbol('mouseUp');
 const _isDraggable = Symbol('isDraggable')
 const _isDroppable = Symbol('isDroppable')
-const _isDragenter = Symbol('_isDragenter');
+const _isDragenter = Symbol('isDragenter');
 
 export function draggable(sprite, option) {
   if ((option && option.destroy) || option === false) { //销毁draggable
@@ -135,6 +135,7 @@ function checkDragUp(evt, sprite) {
 function rectCollision(sprite, bgRect) { //判断 moveRect的centerPoint是否在bgRect中
   let moveRect = sprite.renderBox;
   let dPos = getLayerPos(sprite);
+  console.log(sprite);
   let bgParentPos = getLayerPos(bgRect);
   dPos = [ dPos[ 0 ] - bgParentPos[ 0 ], dPos[ 1 ] - bgParentPos[ 1 ] ]
   const centerPoint = [ (moveRect[ 0 ] + moveRect[ 2 ]) / 2 + dPos[ 0 ], (moveRect[ 1 ] + moveRect[ 3 ]) / 2 + dPos[ 1 ] ];
