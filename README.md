@@ -1,9 +1,9 @@
 # sprite-draggable
 let sprite can draggable，让sprite对象拥有draggable的能力
 
-### 安装
+### 运行demo
 
-```javascript
+```
 npm install
 
 npm start
@@ -14,9 +14,9 @@ npm start
 
 
 
-### 安装
-``` javascript
-  npm install sprite-draggable
+### 安装sprite-draggable依赖
+``` 
+  npm install sprite-draggable --save
 ```
 
 ### 使用
