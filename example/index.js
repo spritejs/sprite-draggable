@@ -9,14 +9,16 @@ scene.delegateEvent('mousewheel', document); //sprite 元素侦听mousewheel事�
 
 const layer = scene.layer();
 
-let child = draggable(new Sprite());
-let child1 = draggable(new Sprite());
-let child2 = new ResizeBlock({ size: [ 100, 30 ], backgroundColor: '#eee', dragRect: [ 0, 0 ] });
-child.attr({ size: [ 100, 30 ], bgcolor: '#f00', pos: [ 200, 200 ] })
-child1.attr({ size: [ 100, 30 ], pos: [ 300, 300 ], bgcolor: '#0f0', zIndex: 1 })
-layer.append(child1);
+let spriteRed = draggable(new Sprite());
+let spriteYellow = draggable(new Sprite());
+let spriteScale = new ResizeBlock({ size: [ 100, 30 ], backgroundColor: '#eee', dragRect: [ 0, 0 ] });
 
-child.dragRect = [ 0, 0, 300, 300 ];//设置拖动范围
+spriteRed.attr({ size: [ 100, 30 ], bgcolor: '#f00', pos: [ 200, 200 ] })
+spriteYellow.attr({ size: [ 100, 30 ], pos: [ 300, 300 ], bgcolor: '#0f0', zIndex: 1 })
+
+layer.append(spriteYellow);
+
+spriteRed.dragRect = [ 0, 0, 300, 300 ];//设置拖动范围
 
 let group = draggable(new Group());//设置group可以拖动
 
@@ -45,12 +47,12 @@ group.on('dragover', (evt) => {
 
 group.attr({ size: [ w, h ], bgcolor: '#ff0', rotate: 0, pos: [ w / 2, h / 2 ] });
 
-group.append(child2);
-
-group.append(child);
+group.append(spriteScale);
+group.append(spriteRed);
 layer.append(group);
+
 layer.on('dblclick', function () {
-  draggable(child, { destroy: true })
+  draggable(spriteRed, { destroy: true })
 });
 group.on('mousewheel', (e) => {
   e.preventDefault();

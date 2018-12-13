@@ -43,10 +43,10 @@
 
 <body>
   <div class="info">
-    1.黄色块可以拖动，鼠标滚轮可以缩放黄色块 <br>
+    1.黄色块可以拖动，并且该色块可以接收绿色块的drop事件，鼠标滚轮可以缩放黄色块 <br>
     2.红色块可以拖动，拖动范围为[0,0,300,300],双击画布取消红色拖动 <br>
     3.灰色块可以拖动，并且可以改变自身大小，自身大小的最小值可以受限制 <br>
-    4.绿色块不能拖动，点击绿色块拖动，直接拖动黄色group
+    4.绿色块能拖动，并且可以drop到黄色块上,触发对应的dragover,dragenter,dragleave,drop事件
   </div>
   <div id="canvas-wrap"></div>
   <div class="option">
