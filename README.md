@@ -15,7 +15,7 @@ npm start
 ### 使用
 ```javascript
 
-  import { draggable } from 'sprite-draggable'
+  import { draggable, droppable } from 'sprite-draggable'
 
   …
 
