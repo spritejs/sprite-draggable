@@ -134,14 +134,19 @@ function checkDragUp(evt, sprite) {
 
 function rectCollision(sprite, bgRect) { //判断 moveRect的centerPoint是否在bgRect中
   let moveRect = sprite.renderBox;
-  let parentPos = [ 0, 0 ];
-  if (sprite.parent && sprite.parent.tarName !== 'layer') {
-    parentPos = sprite.parent.attr("pos");
+  let dPos = getLayerPos(sprite);
+  let bgParentPos = getLayerPos(bgRect);
+  dPos = [ dPos[ 0 ] - bgParentPos[ 0 ], dPos[ 1 ] - bgParentPos[ 1 ] ]
+  const centerPoint = [ (moveRect[ 0 ] + moveRect[ 2 ]) / 2 + dPos[ 0 ], (moveRect[ 1 ] + moveRect[ 3 ]) / 2 + dPos[ 1 ] ];
+  return bgRect.pointCollision({ offsetX: centerPoint[ 0 ], offsetY: centerPoint[ 1 ], layerX: centerPoint[ 0 ], layerY: centerPoint[ 1 ] });
+}
+
+function getLayerPos(sprite) {
+  let x = 0, y = 0;
+  if (sprite.parent && sprite.parent.tagName && sprite.parent.tagName.toLowerCase() !== 'layer') {
+    [ x, y ] = sprite.parent.renderBox;
   }
-  let res = false;
-  const centerPoint = [ (moveRect[ 0 ] + moveRect[ 2 ]) / 2 + parentPos[ 0 ], (moveRect[ 1 ] + moveRect[ 3 ]) / 2 + parentPos[ 1 ] ];
-  res = bgRect.pointCollision({ offsetX: centerPoint[ 0 ], offsetY: centerPoint[ 1 ], layerX: centerPoint[ 0 ], layerY: centerPoint[ 1 ] });
-  return res;
+  return [ x, y ]
 }
 
 function getDragTarget(dom) {
