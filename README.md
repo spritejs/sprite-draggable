@@ -14,6 +14,11 @@ npm start
 
 
 
+### 安装
+``` javascript
+  npm install sprite-draggable
+```
+
 ### 使用
 ```javascript
 
