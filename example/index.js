@@ -10,13 +10,17 @@ scene.delegateEvent('mousewheel', document); //sprite 元素侦听mousewheel事�
 const layer = scene.layer();
 
 let spriteRed = draggable(new Sprite());
-let spriteYellow = draggable(new Sprite());
+let spriteGreen = draggable(new Sprite());
 let spriteScale = new ResizeBlock({ size: [ 100, 30 ], backgroundColor: '#eee', dragRect: [ 0, 0 ] });
 
 spriteRed.attr({ size: [ 100, 30 ], bgcolor: '#f00', pos: [ 200, 200 ] })
-spriteYellow.attr({ size: [ 100, 30 ], pos: [ 300, 300 ], bgcolor: '#0f0', zIndex: 1 })
+spriteGreen.attr({ size: [ 100, 30 ], pos: [ 300, 300 ], bgcolor: '#0f0', zIndex: 1 })
 
-layer.append(spriteYellow);
+spriteGreen.on('dblclick', (evt) => {
+  droppable(group, { destroy: true })
+});
+
+layer.append(spriteGreen);
 
 spriteRed.dragRect = [ 0, 0, 300, 300 ];//设置拖动范围
 

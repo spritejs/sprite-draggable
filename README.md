@@ -23,7 +23,11 @@ npm start
 
   let group = draggable(new Group());
 
+  // draggable(group,false); draggable(group,{destroy,true}) 取消注册drag
+
   dropabble(group) //注册drop事件
+
+  // dropabble(group,{destroy:true}) ;dropabble(group,false) 取消注册drop
 
   group.on('drag', (evt) => {
     console.log('drag')

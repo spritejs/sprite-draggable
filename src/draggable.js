@@ -5,10 +5,11 @@ const _mouseDown = Symbol('mouseDown');
 const _mouseMove = Symbol('mouseMove');
 const _mouseUp = Symbol('mouseUp');
 const _isDraggable = Symbol('isDraggable')
+const _isDroppable = Symbol('isDroppable')
 const _isDragenter = Symbol('_isDragenter');
 
 export function draggable(sprite, option) {
-  if (option && option.destroy) { //销毁拖动
+  if ((option && option.destroy) || option === false) { //销毁draggable
     if (!sprite[ _isDraggable ]) return sprite;
     delete sprite[ _isDraggable ];
     return sprite.off('mousedown', sprite[ _mouseDown ]).off('mousemove', sprite[ _mouseMove ]).off('mouseup', sprite[ _mouseUp ]);
@@ -80,7 +81,20 @@ export function draggable(sprite, option) {
 }
 
 export function droppable(sprite, option) {
-  dropList.push(sprite);
+  if ((option && option.destroy) || option === false) { //销毁drop
+    if (sprite[ _isDroppable ]) {
+      delete sprite[ _isDraggable ];
+      const spriteIndex = dropList.indexOf(sprite);
+      if (spriteIndex !== -1) {
+        dropList.splice(spriteIndex, 1);
+      }
+    }
+  } else {
+    if (!sprite[ _isDroppable ]) {
+      dropList.push(sprite);
+      sprite[ _isDroppable ] = true;
+    }
+  }
   return sprite;
 }
 
