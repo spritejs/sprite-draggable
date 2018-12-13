@@ -9,7 +9,7 @@ scene.delegateEvent('mousewheel', document); //sprite 元素侦听mousewheel事�
 
 const layer = scene.layer();
 
-let child = draggable(new Group());
+let child = draggable(new Sprite());
 let child1 = draggable(new Sprite());
 let child2 = new ResizeBlock({ size: [ 100, 30 ], backgroundColor: '#eee', dragRect: [ 0, 0 ] });
 child.attr({ size: [ 100, 30 ], bgcolor: '#f00', pos: [ 200, 200 ] })
@@ -18,8 +18,31 @@ layer.append(child1);
 
 child.dragRect = [ 0, 0, 300, 300 ];//设置拖动范围
 
-let group = draggable(new Group());
-droppable(group);
+let group = draggable(new Group());//设置group可以拖动
+
+droppable(group); //设置group接收drop
+
+group.on('drag', (evt) => {
+  console.log('drag')
+});
+
+group.on('drop', (evt) => {
+  console.log('drop')
+});
+
+group.on('dragenter', (evt) => {
+  console.log('dragenter')
+});
+
+group.on('dragleave', (evt) => {
+  console.log('dragleave')
+});
+
+group.on('dragover', (evt) => {
+  console.log('dragover')
+});
+
+
 group.attr({ size: [ w, h ], bgcolor: '#ff0', rotate: 0, pos: [ w / 2, h / 2 ] });
 
 group.append(child2);

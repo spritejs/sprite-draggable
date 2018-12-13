@@ -14,11 +14,34 @@ npm start
 
 ### 使用
 ```javascript
+
   import { draggable } from 'sprite-draggable'
 
   …
 
   let group = draggable(new Group());
+
+  group.dropabble(group) //注册drop事件
+
+  group.on('drag', (evt) => {
+    console.log('drag')
+  });
+
+  group.on('drop', (evt) => {
+    console.log('drop')
+  });
+
+  group.on('dragenter', (evt) => {
+    console.log('dragenter')
+  });
+
+  group.on('dragleave', (evt) => {
+    console.log('dragleave')
+  });
+
+  group.on('dragover', (evt) => {
+    console.log('dragover')
+  });
 
   let sprite = draggable(new Sprite());
 
@@ -46,5 +69,18 @@ npm start
   sprite.draggable(sprite,{destroy:true});
 
 ```
+
+### 事件列表：
+
+| 事件   |      描述      |  Cool |
+|----------|-------------|------|
+| dragstart |  开始拖动对象 |  |
+| drag |    正在拖动对象   |   |
+| dragend | 停止拖动对象 |     |
+| dragover | 一个draggable对象在另一个droppable对象上拖动 |     |
+| dragenter | 一个draggable对象在进入一个droppable对象上 |   draggable进入droppable判断点为draggable对象最小矩形的中心  |
+| dragleave | 一个draggable对象离开一个droppable对象上 |     |
+| drop | 一个draggable对象放在一个droppable对象上 |     |
+
 
 

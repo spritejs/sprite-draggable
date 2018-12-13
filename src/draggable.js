@@ -5,6 +5,8 @@ const _mouseDown = Symbol('mouseDown');
 const _mouseMove = Symbol('mouseMove');
 const _mouseUp = Symbol('mouseUp');
 const _isDraggable = Symbol('isDraggable')
+const _isDragenter = Symbol('_isDragenter');
+
 export function draggable(sprite, option) {
   if (option && option.destroy) { //销毁拖动
     if (!sprite[ _isDraggable ]) return sprite;
@@ -29,7 +31,7 @@ export function draggable(sprite, option) {
     const { offsetX, offsetY } = evt;
     $drag.x0_ = offsetX;
     $drag.y0_ = offsetY;
-    $drag.dispatchEvent('dragstart', evt, true, true)
+    $drag.dispatchEvent('dragstart', transEvent(evt), true, true)
     $drag.setMouseCapture();
   };
 
@@ -59,8 +61,8 @@ export function draggable(sprite, option) {
       }
 
       sprite.attr({ x: tarX, y: tarY });
-      $drag.dispatchEvent('drag', evt, true, true);
-      checkDroppable(evt, sprite);
+      $drag.dispatchEvent('drag', transEvent(evt), true, true);
+      checkDragmove(evt, sprite);
     }
   };
 
@@ -70,7 +72,8 @@ export function draggable(sprite, option) {
       $drag.releaseMouseCapture();
       delete $drag.x0_;
       delete $drag.y0_;
-      $drag.dispatchEvent('dragend', evt, true, true)
+      $drag.dispatchEvent('dragend', transEvent(evt), true, true)
+      checkDragUp(evt, sprite);
     }
     $drag = null;
   };
@@ -78,17 +81,53 @@ export function draggable(sprite, option) {
 
 export function droppable(sprite, option) {
   dropList.push(sprite);
+  return sprite;
 }
 
-function checkDroppable(evt, sprite) {
+function transEvent(evt) {
+  return { detail: evt };
+}
+
+function checkDragmove(evt, sprite) {
+  evt.dragItem = sprite;
+  const moveRect = sprite.renderBox;
   dropList.forEach(dropSprite => {
-    const dragRect = sprite.renderBox;
-    const dropRect = dropSprite.renderBox;
-    const centerPoint = [ (dragRect[ 0 ] + dragRect[ 2 ]) / 2, (dragRect[ 1 ] + dragRect[ 3 ]) / 2 ];
-    if (centerPoint[ 0 ] > dropRect[ 0 ] && centerPoint[ 0 ] < dropRect[ 3 ] && centerPoint[ 1 ] > dropRect[ 1 ] && centerPoint[ 1 ] < dropRect[ 3 ]) {
-      dropSprite.dispatchEvent('dragend', evt, true, true)
+    if (sprite !== dropSprite) {
+      let collision = rectCollision(sprite, dropSprite);
+      if (collision && !dropSprite[ _isDragenter ]) {
+        dropSprite[ _isDragenter ] = true;
+        dropSprite.dispatchEvent('dragenter', transEvent(evt), true, true);
+      } else if (!collision && dropSprite[ _isDragenter ]) {
+        delete dropSprite[ _isDragenter ];
+        dropSprite.dispatchEvent('dragleave', transEvent(evt), true, true);
+      } else if (collision && dropSprite[ _isDragenter ]) {
+        dropSprite.dispatchEvent('dragover', transEvent(evt), true, true);
+      }
     }
   });
+}
+
+function checkDragUp(evt, sprite) {
+  evt.dragItem = sprite;
+  dropList.forEach(dropSprite => {
+    let collision = rectCollision(sprite, dropSprite);
+    if (collision && dropSprite[ _isDragenter ]) {
+      delete dropSprite[ _isDragenter ];
+      dropSprite.dispatchEvent('drop', transEvent(evt), true, true);
+    }
+  });
+}
+
+function rectCollision(sprite, bgRect) { //判断 moveRect的centerPoint是否在bgRect中
+  let moveRect = sprite.renderBox;
+  let parentPos = [ 0, 0 ];
+  if (sprite.parent && sprite.parent.tarName !== 'layer') {
+    parentPos = sprite.parent.attr("pos");
+  }
+  let res = false;
+  const centerPoint = [ (moveRect[ 0 ] + moveRect[ 2 ]) / 2 + parentPos[ 0 ], (moveRect[ 1 ] + moveRect[ 3 ]) / 2 + parentPos[ 1 ] ];
+  res = bgRect.pointCollision({ offsetX: centerPoint[ 0 ], offsetY: centerPoint[ 1 ], layerX: centerPoint[ 0 ], layerY: centerPoint[ 1 ] });
+  return res;
 }
 
 function getDragTarget(dom) {
