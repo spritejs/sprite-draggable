@@ -28,7 +28,7 @@ export class ResizeBlock extends Group {
       let [ w, h ] = this.attr("size");
       $drag.attr({ pos: [ x + w - dragDx, y + h - dragDx ] });
       label.attr({ pos: [ x, y ] })
-      $drag.dragRect = [ x + dragPx * 2, y + dragPx * 2 ]
+      draggable($drag, { dragRect: [ x + dragPx * 2, y + dragPx * 2 ] });
     });
     $drag.on("drag", function (evt) {
       let [ x, y ] = this.attr('pos');

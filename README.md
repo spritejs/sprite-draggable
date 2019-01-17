@@ -32,7 +32,7 @@ npm start
 
   dropabble(group) //注册drop事件
 
-  // dropabble(group,{destroy:true}) ;dropabble(group,false) 取消注册drop
+  // dropabble(group,false) ;dropabble(group,{destroy:true}) 取消注册drop
 
   group.on('drag', (evt) => {
     console.log('drag')
@@ -57,10 +57,11 @@ npm start
   let sprite = draggable(new Sprite());
 
   //表示在 [0,0] 与 [300,300] 这两点矩形之间拖动 [xmin,ymin,xmax,ymax]，不设置表示不控制拖动范围
-  sprite.dragRect = [0,0,300,300];
+  draggable(sprite,{dragRect:[0,0,300,300]});
+  //draggable(sprite,{dragRect:[]});
 
   //表示拖动的范围大于坐标[0,0]
-  //sprite.dragRect = [0,0];
+  //draggable(sprite,{dragRect:[0,0]});
 
   /**拖动过程中，有三个事件 dragstart、drag、dragend**/
   sprite.on('dragstart',function(event){
