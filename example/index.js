@@ -11,17 +11,22 @@ const layer = scene.layer();
 
 let spriteRed = draggable(new Sprite());//设置拖动范围
 draggable(spriteRed, { dragRect: [ 0, 0, 300, 300 ] })
-let spriteGreen = draggable(new Sprite());
+let spriteGreen = new Sprite();
 let spriteScale = new ResizeBlock({ size: [ 100, 30 ], backgroundColor: '#eee', dragRect: [ 0, 0 ] });
 
 spriteRed.attr({ size: [ 100, 30 ], bgcolor: '#f00', pos: [ 200, 200 ] })
-spriteGreen.attr({ size: [ 100, 30 ], pos: [ 300, 300 ], bgcolor: '#0f0', zIndex: 1 })
+spriteGreen.attr({ size: [ 100, 30 ], bgcolor: 'rgba(0,255,0,0.2)', zIndex: 1 })
 
 // spriteGreen.on('dblclick', (evt) => {
 //   droppable(group, { destroy: true });
 // });
-
-layer.append(spriteGreen);
+let nGroup = draggable(new Group());
+nGroup.attr({ size: [ 30, 30 ], pos: [ 300, 300 ], clipOverflow: false, bgcolor: '#f00' })
+nGroup.append(spriteGreen);
+nGroup.on('mousedown', function () {
+  console.log('mousedown')
+})
+//layer.append(spriteGreen);
 
 
 let group = draggable(new Group());//设置group可以拖动
@@ -54,6 +59,7 @@ group.attr({ size: [ w, h ], bgcolor: '#ff0', rotate: 0, pos: [ w / 2, h / 2 ] }
 group.append(spriteScale);
 group.append(spriteRed);
 layer.append(group);
+layer.append(nGroup)
 
 layer.on('dblclick', function () {
   draggable(spriteRed, { destroy: true })
