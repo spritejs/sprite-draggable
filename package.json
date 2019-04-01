@@ -1,13 +1,9 @@
 {
   "name": "sprite-draggable",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "let sprite can draggable",
   "main": "lib/index.js",
   "browser": "lib/index.js",
-  "esnext": {
-    "lib/index.js": "src/index.js"
-  },
-  "module":"src/index.js",
   "directories": {
     "lib": "lib"
   },
