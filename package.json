@@ -1,6 +1,6 @@
 {
   "name": "sprite-draggable",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "let sprite can draggable",
   "main": "lib/index.js",
   "browser": "lib/index.js",
