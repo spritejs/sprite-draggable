@@ -19,7 +19,7 @@ npm start
   npm install sprite-draggable --save
 ```
 
-### 使用
+### 作为方法使用
 ```javascript
 
   import { draggable, droppable } from 'sprite-draggable'
@@ -78,7 +78,72 @@ npm start
 
 
   //取消元素拖动
-  sprite.draggable(sprite,{destroy:true});
+  draggable(sprite,false);
+
+```
+
+### 作为spritejs插件使用
+```javascript
+
+  // draggable与droppable方法注册到BaseSprite上
+  import { install } from 'sprite-draggable'
+  spritejs.use(install);
+  …
+
+  let group = new Group();
+  group.draggable();
+  // group.draggable(false); group.draggable({destroy,true}) 取消注册drag
+
+  group.dropabble()//注册drop事件
+
+  // group.droppable(false) ;group.droppable({destroy:true}) 取消注册drop
+
+  group.on('drag', (evt) => {
+    console.log('drag')
+  });
+
+  group.on('drop', (evt) => {
+    console.log('drop')
+  });
+
+  group.on('dragenter', (evt) => {
+    console.log('dragenter')
+  });
+
+  group.on('dragleave', (evt) => {
+    console.log('dragleave')
+  });
+
+  group.on('dragover', (evt) => {
+    console.log('dragover')
+  });
+
+  let sprite = new Sprite();
+  //表示在 [0,0] 与 [300,300] 这两点矩形之间拖动 [xmin,ymin,xmax,ymax]，不设置表示不控制拖动范围
+  sprite.draggable({dragRect:[0,0,300,300]})
+
+  // 取消设置dragRect方法
+  //sprite.draggable({dragRect:[0,0,300,300]})
+
+  //表示拖动的范围大于坐标[0,0]
+  //sprite.draggable({dragRect:[0,0]});
+
+  /**拖动过程中，有三个事件 dragstart、drag、dragend**/
+  sprite.on('dragstart',function(event){
+    console.log('dragstart');
+  });
+
+  sprite.on('drag',function(event){
+    console.log('drag');
+  });
+
+  sprite.on('dragend',function(event){
+    console.log('dragend');
+  });
+
+
+  //取消元素拖动
+  sprite.draggable(false);
 
 ```
 
