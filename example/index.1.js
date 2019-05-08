@@ -1,17 +1,16 @@
 
-import { draggable, droppable,install } from '../src/index'
+import { draggable, droppable } from '../src/index'
 import { ResizeBlock } from './ResizeBlock'
 let i = 0;
 const { Scene, Sprite, Group } = spritejs, w = window.innerWidth, h = window.innerHeight;
-spritejs.use(install)
 const scene = new Scene('#canvas-wrap', { viewport: [ w, h ], displayRatio: 'auto', resolution: 'flex' });
 
 scene.delegateEvent('mousewheel', document); //sprite 元素侦听mousewheel事件
 
 const layer = scene.layer();
 
-let spriteRed = new Sprite();//设置拖动范围
-spriteRed.draggable({ dragRect: [ 0, 0, 300, 300 ] });
+let spriteRed = draggable(new Sprite());//设置拖动范围
+draggable(spriteRed, { dragRect: [ 0, 0, 300, 300 ] })
 let spriteGreen = new Sprite();
 let spriteScale = new ResizeBlock({ size: [ 100, 30 ], backgroundColor: '#eee', dragRect: [ 0, 0 ] });
 
@@ -21,8 +20,7 @@ spriteGreen.attr({ size: [ 100, 30 ], bgcolor: 'rgba(0,255,0,0.2)', zIndex: 1 })
 // spriteGreen.on('dblclick', (evt) => {
 //   droppable(group, { destroy: true });
 // });
-let nGroup = new Group();
-nGroup.draggable();
+let nGroup = draggable(new Group());
 nGroup.attr({ size: [ 30, 30 ], pos: [ 300, 300 ], clipOverflow: false, bgcolor: '#f00' })
 nGroup.append(spriteGreen);
 nGroup.on('mousedown', function () {
@@ -32,7 +30,8 @@ nGroup.on('mousedown', function () {
 
 
 let group = draggable(new Group());//设置group可以拖动
-group.droppable();
+
+droppable(group); //设置group接收drop
 
 group.on('drag', (evt) => {
   console.log('drag')
@@ -63,6 +62,7 @@ group.append(spriteRed);
 group.attr({scale:0.6})
 
 let newGroup = new Group();
+newGroup.attr({rotate:'30'})
 
 
 
@@ -72,8 +72,7 @@ layer.append(newGroup);
 layer.append(nGroup)
 
 layer.on('dblclick', function () {
-  spriteRed.draggable(false);
-  //draggable(spriteRed, { destroy: true })
+  draggable(spriteRed, { destroy: true })
   draggable(spriteGreen, { dragRect: [ 200, 240 ] })
 });
 
