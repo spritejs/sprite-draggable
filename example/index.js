@@ -10,7 +10,7 @@ scene.delegateEvent('mousewheel', document); //sprite 元素侦听mousewheel事�
 
 const layer = scene.layer();
 
-let spriteRed = new Sprite();//设置拖动范围
+let spriteRed = new Sprite();//
 spriteRed.draggable({ dragRect: [ 0, 0, 300, 300 ] });
 let spriteGreen = new Sprite();
 let spriteScale = new ResizeBlock({ size: [ 100, 30 ], backgroundColor: '#eee', dragRect: [ 0, 0 ] });
@@ -60,7 +60,7 @@ group.attr({ size: [ w, h ], bgcolor: '#ff0', rotate: 0, pos: [ w / 2, h / 2 ] }
 group.append(spriteScale);
 group.append(spriteRed);
 
-group.attr({scale:0.6})
+//group.attr({scale:0.6})
 
 let newGroup = new Group();
 
