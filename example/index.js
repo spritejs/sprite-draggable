@@ -60,7 +60,6 @@ group.attr({ size: [ w, h ], bgcolor: '#ff0', rotate: 0, pos: [ w / 2, h / 2 ] }
 group.append(spriteScale);
 group.append(spriteRed);
 
-//group.attr({scale:0.6})
 
 let newGroup = new Group();
 
