@@ -38,7 +38,7 @@ export function draggable(sprite, option) {
   };
 
   function mouseMove(evt) {
-    evt.stopPropagation();
+    //evt.stopPropagation();
     if ($drag && $drag === sprite && $drag.x0_ != null) {
       const { offsetX, offsetY } = evt;
       let dx = offsetX - sprite.x0_;
@@ -69,7 +69,7 @@ export function draggable(sprite, option) {
   };
 
   function mouseUp(evt) {
-    evt.stopPropagation();
+    //evt.stopPropagation();
     if ($drag && $drag.x0_ != null) {
       $drag.releaseMouseCapture();
       delete $drag.x0_;
@@ -105,7 +105,7 @@ function transEvent(evt) {
 
 function checkDragmove(evt, sprite) {
   evt.dragItem = sprite;
-  const moveRect = sprite.renderBox;
+  //const moveRect = sprite.renderBox;
   dropList.forEach(dropSprite => {
     if (sprite !== dropSprite) {
       let collision = rectCollision(sprite, dropSprite);
