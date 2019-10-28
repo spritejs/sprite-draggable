@@ -35,10 +35,10 @@ export function draggable(sprite, option) {
     }
   }
   function mouseDown(evt) {
-    evt.stopPropagation()
     if (evt.originalEvent && evt.originalEvent.which === 3) {
       return
     }
+    evt.stopPropagation()
     $drag = getDragTarget(evt.target)
     if ($drag !== sprite) return
     const { offsetX, offsetY } = evt
@@ -151,10 +151,7 @@ function rectCollision(sprite, bgRect) {
   let dPos = getLayerPos(sprite)
   let bgParentPos = getLayerPos(bgRect)
   dPos = [dPos[0] - bgParentPos[0], dPos[1] - bgParentPos[1]]
-  const centerPoint = [
-    (moveRect[0] + moveRect[2]) / 2 + dPos[0],
-    (moveRect[1] + moveRect[3]) / 2 + dPos[1]
-  ]
+  const centerPoint = [(moveRect[0] + moveRect[2]) / 2 + dPos[0], (moveRect[1] + moveRect[3]) / 2 + dPos[1]]
   return bgRect.pointCollision({
     offsetX: centerPoint[0],
     offsetY: centerPoint[1],
@@ -166,11 +163,7 @@ function rectCollision(sprite, bgRect) {
 function getLayerPos(sprite) {
   let x = 0,
     y = 0
-  if (
-    sprite.parent &&
-    sprite.parent.tagName &&
-    sprite.parent.tagName.toLowerCase() !== 'layer'
-  ) {
+  if (sprite.parent && sprite.parent.tagName && sprite.parent.tagName.toLowerCase() !== 'layer') {
     ;[x, y] = sprite.parent.renderBox
   }
   return [x, y]
