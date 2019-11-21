@@ -19,9 +19,9 @@ export function draggable(sprite, option) {
     if (!sprite[_isDraggable]) return sprite
     delete sprite[_isDraggable]
     return sprite
-      .off('mousedown', sprite[_mouseDown])
-      .off('mousemove', sprite[_mouseMove])
-      .off('mouseup', sprite[_mouseUp])
+      .removeEventListener('mousedown', sprite[_mouseDown])
+      .removeEventListener('mousemove', sprite[_mouseMove])
+      .removeEventListener('mouseup', sprite[_mouseUp])
   } else {
     if (!sprite[_isDraggable]) {
       sprite[_isDraggable] = true
@@ -29,9 +29,9 @@ export function draggable(sprite, option) {
       sprite[_mouseMove] = mouseMove
       sprite[_mouseUp] = mouseUp
       return sprite
-        .on('mousedown', sprite[_mouseDown])
-        .on('mousemove', sprite[_mouseMove])
-        .on('mouseup', sprite[_mouseUp])
+        .addEventListener('mousedown', sprite[_mouseDown])
+        .addEventListener('mousemove', sprite[_mouseMove])
+        .addEventListener('mouseup', sprite[_mouseUp])
     }
   }
   function mouseDown(evt) {
@@ -41,22 +41,25 @@ export function draggable(sprite, option) {
     evt.stopPropagation()
     $drag = getDragTarget(evt.target)
     if ($drag !== sprite) return
-    const { offsetX, offsetY } = evt
-    $drag.x0_ = offsetX
-    $drag.y0_ = offsetY
+    const { originalX, originalY } = evt
+    console.log(evt)
+    $drag.x0_ = originalX
+    $drag.y0_ = originalY
     $drag.dispatchEvent('dragstart', transEvent(evt), true, true)
-    $drag.setMouseCapture()
   }
 
   function mouseMove(evt) {
     //evt.stopPropagation();
-    if ($drag && $drag === sprite && $drag.x0_ != null) {
+    if ($drag && $drag === sprite && $drag.x0_ !== undefined) {
+      console.log('move-----------')
       const { offsetX, offsetY } = evt
       let dx = offsetX - sprite.x0_
       let dy = offsetY - sprite.y0_
       const [cx, cy] = sprite.attr('pos')
-      const m = new Matrix(sprite.transform.m)
+      const m = new Matrix(sprite.transformMatrix)
+      console.log(m, dx, dy)
       ;[dx, dy] = m.transformPoint(dx, dy)
+      console.log(dx, dy)
       let [minX, minY, maxX, maxY] = sprite[_dragRect] || [] //
       let tarX = cx + dx
       let tarY = cy + dy
@@ -72,7 +75,7 @@ export function draggable(sprite, option) {
       if (maxY !== undefined) {
         tarY = Math.min(maxY, tarY)
       }
-
+      console.log('mousemove')
       sprite.attr({ x: tarX, y: tarY })
       $drag.dispatchEvent('drag', transEvent(evt), true, true)
       checkDragmove(evt, sprite)
