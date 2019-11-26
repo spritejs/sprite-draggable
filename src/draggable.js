@@ -19,9 +19,9 @@ export function draggable(sprite, option) {
     if (!sprite[_isDraggable]) return sprite
     delete sprite[_isDraggable]
     return sprite
-      .removeEventListener('mousedown', sprite[_mouseDown])
-      .removeEventListener('mousemove', sprite[_mouseMove])
-      .removeEventListener('mouseup', sprite[_mouseUp])
+      .removeEventListener('mousedown', sprite[_mouseDown], false)
+      .removeEventListener('mousemove', sprite[_mouseMove], false)
+      .removeEventListener('mouseup', sprite[_mouseUp], false)
   } else {
     if (!sprite[_isDraggable]) {
       sprite[_isDraggable] = true
@@ -29,9 +29,9 @@ export function draggable(sprite, option) {
       sprite[_mouseMove] = mouseMove
       sprite[_mouseUp] = mouseUp
       return sprite
-        .addEventListener('mousedown', sprite[_mouseDown])
-        .addEventListener('mousemove', sprite[_mouseMove])
-        .addEventListener('mouseup', sprite[_mouseUp])
+        .addEventListener('mousedown', sprite[_mouseDown], false)
+        .addEventListener('mousemove', sprite[_mouseMove], false)
+        .addEventListener('mouseup', sprite[_mouseUp], false)
     }
   }
   function mouseDown(evt) {
@@ -41,26 +41,24 @@ export function draggable(sprite, option) {
     evt.stopPropagation()
     $drag = getDragTarget(evt.target)
     if ($drag !== sprite) return
-    const { x, y } = evt
-    let [cx, cy] = $drag.attr('pos')
-    $drag.x0_ = x
-    $drag.y0_ = y
-    $drag.startX = cx
-    $drag.startY = cy
+    const [offsetX, offsetY] = sprite.getOffsetPosition(evt.x, evt.y)
+    $drag.x0_ = offsetX
+    $drag.y0_ = offsetY
     $drag.dispatchEvent('dragstart', transEvent(evt), true, true)
     $drag.setMouseCapture()
   }
 
   function mouseMove(evt) {
     if ($drag && $drag === sprite && $drag.x0_ != null) {
-      const { x, y } = evt
-      let dx = x - sprite.x0_
-      let dy = y - sprite.y0_
+      const [offsetX, offsetY] = sprite.getOffsetPosition(evt.x, evt.y)
+      let dx = offsetX - sprite.x0_
+      let dy = offsetY - sprite.y0_
+      const [cx, cy] = sprite.attr('pos')
       const m = new Matrix(sprite.transformMatrix)
       ;[dx, dy] = m.transformPoint(dx, dy)
       let [minX, minY, maxX, maxY] = sprite[_dragRect] || [] //
-      let tarX = $drag.startX + dx
-      let tarY = $drag.startY + dy
+      let tarX = cx + dx
+      let tarY = cy + dy
       if (minX !== undefined) {
         tarX = Math.max(minX, tarX)
       }
@@ -95,7 +93,7 @@ export function droppable(sprite, option) {
   if ((option && option.destroy) || option === false) {
     //销毁drop
     if (sprite[_isDroppable]) {
-      delete sprite[_isDraggable]
+      delete sprite[_isDroppable]
       const spriteIndex = dropList.indexOf(sprite)
       if (spriteIndex !== -1) {
         dropList.splice(spriteIndex, 1)
@@ -116,7 +114,6 @@ function transEvent(evt) {
 
 function checkDragmove(evt, sprite) {
   evt.dragItem = sprite
-  //const moveRect = sprite.renderBox;
   dropList.forEach(dropSprite => {
     if (sprite !== dropSprite) {
       let collision = rectCollision(sprite, dropSprite)
@@ -143,31 +140,12 @@ function checkDragUp(evt, sprite) {
     }
   })
 }
-
 function rectCollision(sprite, bgRect) {
   //判断 moveRect的centerPoint是否在bgRect中
-  let moveRect = sprite.renderBox
-  let dPos = getLayerPos(sprite)
-  let bgParentPos = getLayerPos(bgRect)
-  dPos = [dPos[0] - bgParentPos[0], dPos[1] - bgParentPos[1]]
-  const centerPoint = [(moveRect[0] + moveRect[2]) / 2 + dPos[0], (moveRect[1] + moveRect[3]) / 2 + dPos[1]]
-  return bgRect.pointCollision({
-    offsetX: centerPoint[0],
-    offsetY: centerPoint[1],
-    layerX: centerPoint[0],
-    layerY: centerPoint[1]
-  })
+  let { top, left, width, height } = sprite.getBoundingClientRect()
+  let dPos = [left + width / 2, top + height / 2]
+  return bgRect.isPointCollision(dPos[0], dPos[1])
 }
-
-function getLayerPos(sprite) {
-  let x = 0,
-    y = 0
-  if (sprite.parent && sprite.parent.tagName && sprite.parent.tagName.toLowerCase() !== 'layer') {
-    ;[x, y] = sprite.parent.renderBox
-  }
-  return [x, y]
-}
-
 function getDragTarget(dom) {
   if (dom[_isDraggable]) {
     return dom
