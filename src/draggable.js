@@ -23,6 +23,7 @@ export function draggable(sprite, option) {
       .off('mousedown', sprite[_mouseDown])
       .off('mousemove', sprite[_mouseMove])
       .off('mouseup', sprite[_mouseUp])
+      .off('__end', sprite[_mouseUp])
   } else {
     if (!sprite[_isDraggable]) {
       sprite[_isDraggable] = true
@@ -34,6 +35,7 @@ export function draggable(sprite, option) {
         .on('mousedown', sprite[_mouseDown])
         .on('mousemove', sprite[_mouseMove])
         .on('mouseup', sprite[_mouseUp])
+        .on('__end', sprite[_mouseUp])
     }
   }
   function mouseDown(evt) {
@@ -187,14 +189,14 @@ function getDragTarget(dom) {
 function layerLeave(sprite) {
   if (sprite.layer && !sprite[_layerLeave]) {
     sprite.layer.on('mouseleave', _ => {
-      sprite.dispatchEvent('mouseup', {})
+      sprite.dispatchEvent('__end', {})
     })
     sprite[_layerLeave] = true
   } else {
     if (!sprite[_layerLeave]) {
       sprite.on('afterdraw', _ => {
         sprite.layer.on('mouseleave', _ => {
-          sprite.dispatchEvent('mouseup', {})
+          sprite.dispatchEvent('__end', {})
         })
       })
       sprite[_layerLeave] = true
