@@ -8,6 +8,7 @@ const _isDraggable = Symbol('isDraggable')
 const _isDroppable = Symbol('isDroppable')
 const _isDragenter = Symbol('isDragenter')
 const _dragRect = Symbol('dragRect')
+const _layerLeave = Symbol('_layerLeave')
 
 export function draggable(sprite, option) {
   if (option && option.dragRect !== undefined) {
@@ -28,6 +29,7 @@ export function draggable(sprite, option) {
       sprite[_mouseDown] = mouseDown
       sprite[_mouseMove] = mouseMove
       sprite[_mouseUp] = mouseUp
+      layerLeave(sprite) //处理drag出了layer的情况
       return sprite
         .on('mousedown', sprite[_mouseDown])
         .on('mousemove', sprite[_mouseMove])
@@ -180,4 +182,22 @@ function getDragTarget(dom) {
     return getDragTarget(dom.parentNode)
   }
   return null
+}
+
+function layerLeave(sprite) {
+  if (sprite.layer && !sprite[_layerLeave]) {
+    sprite.layer.on('mouseleave', _ => {
+      sprite.dispatchEvent('mouseup', {})
+    })
+    sprite[_layerLeave] = true
+  } else {
+    if (!sprite[_layerLeave]) {
+      sprite.on('afterdraw', _ => {
+        sprite.layer.on('mouseleave', _ => {
+          sprite.dispatchEvent('mouseup', {})
+        })
+      })
+      sprite[_layerLeave] = true
+    }
+  }
 }
